@@ -10,8 +10,9 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  orderBy,
+  serverTimestamp
 } from "../../firebase/firebaseConfig";
-import { serverTimestamp } from "firebase/database";
 
 const Profile = () => {
   const [post, setPost] = useState("");
@@ -26,7 +27,6 @@ const Profile = () => {
     const getData = async () => {
       const getAllPosts = await getDocs(collection(db, "posts"));
       getAllPosts.forEach((doc) => {
-
         setAllPosts((prev) => {
           const newData = [...prev, doc.data()];
           return newData;
@@ -37,7 +37,7 @@ const Profile = () => {
 
     let unsubscribe = null;
     const getRealTimeData = () => {
-      const q = query(collection(db, "posts"));
+      const q = query(collection(db, "posts"), orderBy("createdOn", "desc"))
       unsubscribe = onSnapshot(q, (querySnapshot) => {
         const posts = [];
         querySnapshot.forEach((doc) => {
@@ -114,6 +114,9 @@ const Profile = () => {
       </form>
 
       <div className="flex flex-wrap justify-center gap-x-20 gap-y-4">
+        {allPosts.length === 0 && (
+          <div className="text-2xl">Add New Post...</div>
+        )}
         {allPosts.map((eachPost, idx) => {
           return (
             <div
