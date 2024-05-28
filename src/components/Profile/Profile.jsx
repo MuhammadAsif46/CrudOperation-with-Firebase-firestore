@@ -1,27 +1,25 @@
 import React from "react";
 import { useState } from "react";
-import {addDoc,collection,db,} from "../../firebase/firebaseConfig"
+import { addDoc, collection, db, getDocs } from "../../firebase/firebaseConfig";
 
 const Profile = () => {
   const [post, setPost] = useState("");
   const [allPosts, setAllPosts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
-
   useEffect(() => {
     const getData = async () => {
-      const querySnapshot = await getDocs(collection(db, "posts"));
-      querySnapshot.forEach((doc) => {
+      const getAllPosts = await getDocs(collection(db, "posts"));
+      getAllPosts.forEach((doc) => {
         console.log(`${doc.id} => `, doc.data());
 
-
-        setPosts((prev)=>{
+        setAllPosts((prev) => {
           const newData = [...prev, doc.data()];
           return newData;
-        })
+        });
       });
     };
-    // getData();
+    getData();
 
     // let unsubscribe = null;
     // const getRealTimeData = () => {
@@ -42,25 +40,24 @@ const Profile = () => {
     //   console.log("cleanup function");
     //   unsubscribe();
     // }
-
   }, []);
 
-  const createPostHandler = async(e) => {
+  const createPostHandler = async (e) => {
     e.preventDefault();
 
     console.log("post->", post);
     try {
-        const docRef = await addDoc(collection(db, "posts"), {
-          text: post,
-          createdOn: new Date().getTime(),
-        });
-        console.log("Document written with ID: ", docRef.id);
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
+      const docRef = await addDoc(collection(db, "posts"), {
+        text: post,
+        createdOn: new Date().getTime(),
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
 
     e.target.reset();
-  }
+  };
 
   return (
     <div>
