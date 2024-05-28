@@ -1,45 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { addDoc, collection, db, getDocs } from "../../firebase/firebaseConfig";
+import { addDoc, collection, db, getDocs,onSnapshot,query } from "../../firebase/firebaseConfig";
 
 const Profile = () => {
   const [post, setPost] = useState("");
   const [allPosts, setAllPosts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
-      const getAllPosts = await getDocs(collection(db, "posts"));
-      getAllPosts.forEach((doc) => {
-        console.log(`${doc.id} => `, doc.data());
+      // try {
+        // setIsLoading(true);
+        const getAllPosts = await getDocs(collection(db, "posts"));
+        getAllPosts.forEach((doc) => {
+          console.log(`${doc.id} => `, doc.data());
 
-        setAllPosts((prev) => {
-          const newData = [...prev, doc.data()];
-          return newData;
-        });
-      });
+          setAllPosts((prev) => {
+            const newData = [...prev, doc.data()];
+            return newData;
+          });
+        })
+        // setIsLoading(false);
+      // } catch (error) {
+        // console.log(error.message);
+      // }
     };
     getData();
 
-    // let unsubscribe = null;
-    // const getRealTimeData = () => {
-    //   const q = query(collection(db, "posts"));
-    //   unsubscribe = onSnapshot(q, (querySnapshot) => {
-    //     const posts = [];
-    //     querySnapshot.forEach((doc) => {
-    //         posts.push(doc.data());
-    //     });
+    let unsubscribe = null;
+    const getRealTimeData = () => {
+      const q = query(collection(db, "posts"));
+      unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const posts = [];
+        querySnapshot.forEach((doc) => {
+            posts.push(doc.data());
+        });
 
-    //     setPosts(posts);
-    //     console.log("posts :" , posts);
-    //   });
-    // }
-    // getRealTimeData();
+        setAllPosts(posts);
+        console.log("posts :" , posts);
+      });
+    }
+    getRealTimeData();
 
-    // return ()=>{
-    //   console.log("cleanup function");
-    //   unsubscribe();
-    // }
+    return ()=>{
+      console.log("cleanup function");
+      unsubscribe();
+    }
   }, []);
 
   const createPostHandler = async (e) => {
@@ -47,16 +54,18 @@ const Profile = () => {
 
     console.log("post->", post);
     try {
+      setIsLoading(true);
       const docRef = await addDoc(collection(db, "posts"), {
         text: post,
         createdOn: new Date().getTime(),
       });
+      setIsLoading(false);
+      e.target.reset();
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
+      setIsLoading(false);
     }
-
-    e.target.reset();
   };
 
   return (
@@ -78,6 +87,9 @@ const Profile = () => {
       </form>
 
       <div className="flex flex-wrap justify-center gap-x-20 gap-y-4">
+        {/* {isLoading && (
+          <div className="text-center text-xl ">Data Loading....</div>
+        )} */}
         {allPosts.map((eachPost, idx) => (
           <div class=" w-1/4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-white ">
             <p class="mb-3 text-center text-xl py-10 text-gray-700 dark:text-gray-700">
