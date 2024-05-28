@@ -26,7 +26,6 @@ const Profile = () => {
     const getData = async () => {
       const getAllPosts = await getDocs(collection(db, "posts"));
       getAllPosts.forEach((doc) => {
-        // console.log(`${doc.id} => `, doc.data());
 
         setAllPosts((prev) => {
           const newData = [...prev, doc.data()];

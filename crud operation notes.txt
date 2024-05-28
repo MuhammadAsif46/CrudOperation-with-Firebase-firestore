@@ -1,6 +1,6 @@
 Firebase Basic Crud operation Methods:
 
-1.create post:
+1.create post Method:
 
 import { collection, addDoc } from "firebase/firestore"; 
 
@@ -16,6 +16,44 @@ try {
 }
 
 
+2. get all posts Method:
+
+import { collection, getDocs } from "firebase/firestore"; 
+
+const querySnapshot = await getDocs(collection(db, "users"));
+querySnapshot.forEach((doc) => {
+  console.log(`${doc.id} => ${doc.data()}`);
+});
 
 
+3. get all post real-time updates Method:
 
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+
+const q = query(collection(db, "cities"), where("state", "==", "CA"));
+const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  const cities = [];
+  querySnapshot.forEach((doc) => {
+      cities.push(doc.data().name);
+  });
+  console.log("Current cities in CA: ", cities.join(", "));
+});
+
+
+4.delete a post Method:
+
+import { doc, deleteDoc } from "firebase/firestore";
+
+await deleteDoc(doc(db, "cities", "DC"));
+
+
+5.update a post Method:
+
+import { doc, updateDoc } from "firebase/firestore";
+
+const washingtonRef = doc(db, "cities", "DC");
+
+// Set the "capital" field of the city 'DC'
+await updateDoc(washingtonRef, {
+  capital: true
+});
