@@ -54,44 +54,64 @@ const UpdateProfile = () => {
     }
   };
 
+  console.log(imageUpload);
+
   return (
-    <div className="bg-white p-5 flex mt-10">
-      <div className="bg-purple-400 w-1/2 h-64">
+    <div className="bg-white p-5 mt-10 mx-auto w-1/3 rounded-md shadow-lg">
+      <div className="border h-64 rounded flex justify-center items-center">
         <input
+          hidden
           type="file"
           id="file"
-          onChange={(e) => setImageUpload(e.target.files)}
+          onChange={(e) => {
+            const base64Url = URL.createObjectURL(e.target.files[0])
+            setImageUpload(base64Url);
+          }}
         />
-        {imageScreen && (
+
+        {imageUpload && (
           <img
-            className="mx-auto my-3"
-            src={imageScreen}
+            className=""
+            src={imageUpload}
             alt="image"
-            width={300}
-            height={300}
+            width={100}
+            height={100}
           />
         )}
-      </div>
-      <div className="bg-yellow-200 w-full">
-        <div className="flex items-center gap-3">
-          <label
-            htmlFor="userName"
-            className="text-sm font-medium text-gray-700"
-          >
-            User Name:
+        <div className="border h-52 w-52 mx-auto bg-purple-50 flex justify-center items-center">
+          <label htmlFor="file">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={100}
+              height={100}
+              fill="currentColor"
+              //   class="bi bi-person-fill-add"
+              className="cursor-pointer"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"
+                fill="#ccc"
+              />
+              <path
+                d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4"
+                fill="#ccc"
+              />
+            </svg>
           </label>
-          <div className="">
-            <input
-              id="userName"
-              name="userName"
-              type="userName"
-              autoComplete="userName"
-              required
-              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              onChange={(e) => setUserName(e.target.value)}
-            />
-          </div>
         </div>
+      </div>
+      <div className="mt-5">
+        <input
+          id="userName"
+          name="userName"
+          type="userName"
+          autoComplete="userName"
+          placeholder="Username"
+          required
+          className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          onChange={(e) => setUserName(e.target.value)}
+        />
       </div>
     </div>
   );
