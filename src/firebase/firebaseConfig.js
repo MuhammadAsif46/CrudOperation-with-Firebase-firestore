@@ -12,6 +12,14 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAg9-hPna4Ps2Pk8_5waAZn9HIWQqzWQ_A",
@@ -28,6 +36,9 @@ export const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);
 
+// Create a root reference
+export const storage = getStorage();
+
 export {
   collection,
   addDoc,
@@ -39,4 +50,10 @@ export {
   orderBy,
   updateDoc,
   deleteDoc,
+  ref,
+  getStorage,
+  uploadBytes,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject, 
 };

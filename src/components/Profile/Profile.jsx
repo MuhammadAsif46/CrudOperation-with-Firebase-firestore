@@ -11,7 +11,7 @@ import {
   deleteDoc,
   updateDoc,
   orderBy,
-  serverTimestamp
+  serverTimestamp,
 } from "../../firebase/firebaseConfig";
 
 const Profile = () => {
@@ -37,7 +37,7 @@ const Profile = () => {
 
     let unsubscribe = null;
     const getRealTimeData = () => {
-      const q = query(collection(db, "posts"), orderBy("createdOn", "desc"))
+      const q = query(collection(db, "posts"), orderBy("createdOn", "desc"));
       unsubscribe = onSnapshot(q, (querySnapshot) => {
         const posts = [];
         querySnapshot.forEach((doc) => {
@@ -95,6 +95,16 @@ const Profile = () => {
     }
   };
 
+  // const deleteBtn = async () => {
+  //   try {
+  //     const deleteRef = ref(storage, "images/bg.jpg");
+  //     const deleteRes = await deleteObject(deleteRef);
+  //     console.log("deleteRes-->", deleteRes);
+  //   } catch (error) {
+  //     console.log("error-->", error);
+  //   }
+  // };
+
   return (
     <div>
       <form onSubmit={createPostHandler}>
@@ -107,7 +117,10 @@ const Profile = () => {
             placeholder="Enter a post...."
             onChange={(e) => setPost(e.target.value)}
           />
-          <button className="bg-[#a2d2ff] text-xl py-2 px-5 text-white rounded-md">
+          <button
+            type="submit"
+            className="bg-[#a2d2ff] text-xl py-2 px-5 text-white rounded-md"
+          >
             Post
           </button>
         </div>

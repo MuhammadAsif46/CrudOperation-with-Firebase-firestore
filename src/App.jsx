@@ -1,15 +1,16 @@
+import { Route, Routes} from "react-router-dom";
 import "./App.css";
-import Profile from "./components/Profile/Profile";
+import ProfilePage from "./pages/ProfilePage";
+import UpdateProfilePage from "./pages/UpdateProfilePage";
 
 function App() {
   return (
-    <>
-      <h1 className="text-3xl p-4 bg-[#a2d2ff] text-white">
-        Crud operation with firebase firestore
-      </h1>
-      <Profile/>
-    </>
+    <Routes>
+      <Route path="/" element={<ProfilePage/>}/>
+      <Route path="/update-profile" element={<UpdateProfilePage/>}/>
+    </Routes>
   );
 }
 
 export default App;
+

@@ -57,3 +57,10 @@ const washingtonRef = doc(db, "cities", "DC");
 await updateDoc(washingtonRef, {
   capital: true
 });
+
+
+file types:
+1. Blob
+2. Byte array
+3. base64
+4. buffer
