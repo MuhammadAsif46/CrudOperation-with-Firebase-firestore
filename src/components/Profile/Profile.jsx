@@ -95,16 +95,6 @@ const Profile = () => {
     }
   };
 
-  // const deleteBtn = async () => {
-  //   try {
-  //     const deleteRef = ref(storage, "images/bg.jpg");
-  //     const deleteRes = await deleteObject(deleteRef);
-  //     console.log("deleteRes-->", deleteRes);
-  //   } catch (error) {
-  //     console.log("error-->", error);
-  //   }
-  // };
-
   return (
     <div>
       <form onSubmit={createPostHandler}>

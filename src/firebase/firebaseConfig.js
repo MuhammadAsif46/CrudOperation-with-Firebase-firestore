@@ -21,6 +21,8 @@ import {
   deleteObject,
 } from "firebase/storage";
 
+import {getAuth,updateProfile} from "firebase/auth"
+
 const firebaseConfig = {
   apiKey: "AIzaSyAg9-hPna4Ps2Pk8_5waAZn9HIWQqzWQ_A",
   authDomain: "crud-0peration.firebaseapp.com",
@@ -39,6 +41,8 @@ export const db = getFirestore(app);
 // Create a root reference
 export const storage = getStorage();
 
+export const auth = getAuth(app);
+
 export {
   collection,
   addDoc,
@@ -56,4 +60,9 @@ export {
   uploadBytesResumable,
   getDownloadURL,
   deleteObject, 
+  updateProfile
 };
+
+
+
+
